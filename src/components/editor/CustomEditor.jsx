@@ -1,20 +1,26 @@
 import { Editor } from "@tinymce/tinymce-react";
 import React, { useRef } from "react";
 
+
 export function CustomEditor(props) {
   const editorRef = useRef(null);
-  const log = () => {
-    if (editorRef.current) {
+
+  function onClickHandler() {
+    if (confirm("Are you sure you want to submit?")) {
       console.log(editorRef.current.getContent());
+    } else {
+      alert("Submit have been cancelled");
     }
-  };
-  return (
+  }
+  return (<>
     <Editor
+      
       tinymceScriptSrc={"/assets/libs/tinymce/tinymce.min.js"}
       onInit={(evt, editor) => (editorRef.current = editor)}
       value={props.content}
       init={{
-        height: 800,
+        height: 700,
+        width: 900,
         resize: false,
         menubar: true,
         plugins: [
@@ -42,9 +48,12 @@ export function CustomEditor(props) {
           "alignright alignjustify | bullist numlist outdent indent | " +
           "removeformat | help",
         content_style:
-          "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+          "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }"
       }}
       onEditorChange={props.handleOnEditorChange}
     />
-  );
+    <button
+    type="button"
+    className="btn btn-primary float-left my-3" onClick={onClickHandler}>Submit</button>
+  </>);
 }
